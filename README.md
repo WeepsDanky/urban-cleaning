@@ -1,4 +1,4 @@
-# Urban_Clearning
+# Urban_Cleaning (IM45)
 
 ## Inspiration:
 The inspiration behind our project stems from the pressing issue of urban cleanliness, particularly evident in cities like London. The prevalent presence of garbage not only mars the cityscape but also signifies the inefficiency of current waste management systems. We were motivated to harness data science and technology for good, aiming to revolutionize street cleaning operations worldwide.
