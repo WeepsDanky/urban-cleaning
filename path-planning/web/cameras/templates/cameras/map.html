@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Urban Clean</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCfITtYa7fMn5WJS__mpqWTu-5mNg4mt14"></script>
+</head>
+<body>
+
+<div id="map"></div>
+
+<script>
+
+    var map = new google.maps.Map(document.getElementById('map'), {
+        center: {lat: 51.498445, lng: -0.1762045}, // You can set this to any coordinates
+        zoom: 15,
+        styles: [
+            {
+                "featureType": "all",
+                "stylers": [{"visibility": "off"}]
+            },
+            {
+                "featureType": "all",
+                "elementType": "geometry",
+                "stylers": [{"visibility": "on"}]
+            },
+            {
+                "featureType": "all",
+                "elementType": "labels.text",
+                "stylers": [{"visibility": "on"}]
+            }
+        ]
+    });
+
+    var depotData = {{ depot|safe }}[0];
+
+    var camerasData = {{ cameras|safe }};
+
+    for (var i = 0; i < camerasData.length; i++) {
+        var camera = camerasData[i];
+        var color;
+        
+        if (camera.trash_amount <= 2)  // Adjust this threshold as required.
+            color = "green";
+        else if (camera.trash_amount <= 4)
+            color = "orange";
+        else
+            color = "red";
+
+        var marker = new google.maps.Marker({
+            position: {
+                lat: parseFloat(camera.gps_location.split(",")[0]),
+                lng: parseFloat(camera.gps_location.split(",")[1])
+            },
+            title: "Trash",
+            map: map,
+            icon: {
+                path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+                scale: 5,
+                fillColor: color,
+                fillOpacity: 0.9,
+                strokeColor: "white",
+                strokeWeight: 1
+            }
+        });
+
+        var contentString = '<div id="content">' +
+        '<h1 id="firstHeading">Trash Pile</h1>' +
+        '<div id="bodyContent">' +
+        '<p>' + camera.trash_amount.toString() + ' kg of waste.</p>' +
+        '</div>' +
+        '</div>';
+
+        attachInfoWindow(marker, contentString)
+    }
+
+    function attachInfoWindow(marker, content) {
+        var infowindow = new google.maps.InfoWindow({
+            content: content
+        });
+
+        marker.addListener("click", function() {
+            infowindow.open(marker.get('map'), marker);
+        });
+    }
+
+    var directionsService = new google.maps.DirectionsService();
+
+    var colors = ["#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#FF00FF", "#00FFFF", "#000000"];
+    var rtes = {{ routes|safe }};
+    var rtes_trash = {{ trash_per_route|safe }}
+    var selectedRoute = null;
+
+    var lineSymbol = {
+        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW
+    };
+
+    rtes.forEach(function(route, index) {
+
+        var start = getLatLng(route[0].gps_location);
+        var end = getLatLng(route[route.length - 1].gps_location);
+        var waypoints = [];
+        for(var i = 1; i < route.length-1; i++) {
+            waypoints.push({
+                location: getLatLng(route[i].gps_location),
+                stopover: true
+            });
+        }
+
+        directionsService.route({
+            origin: start,
+            destination: end,
+            waypoints: waypoints,
+            travelMode: 'DRIVING'
+        }, function(response, status) {
+            if (status === 'OK') {
+                var dr = new google.maps.DirectionsRenderer({
+                    map: map,
+                    directions: response,
+                    suppressPolylines: true,
+                    suppressMarkers: true
+                });
+
+                var path = response.routes[0].overview_path;
+                
+                var totalTime = 0;
+                var routeLength = 0;
+                response.routes[0].legs.forEach(function(leg) {
+                    routeLength += leg.distance.value;
+                    totalTime += leg.duration.value
+                });
+
+                var customPolyline = new google.maps.Polyline({
+                    path: path,
+                    map: map,
+                    strokeColor: colors[index % colors.length],
+                    strokeWeight: 2,
+                    icons: [{
+                        icon: lineSymbol,
+                        offset: '100%',
+                        repeat: '100px'
+                    }],
+                    clickable: true
+                });
+                
+                var contentString = '<div id="content">' +
+                '<h1 id="firstHeading">Garbage Truck ' + (index + 1).toString() + '</h1>' +
+                '<div id="bodyContent">' +
+                '<p>Travel Distance: ' + (routeLength / 1000).toFixed(2).toString() + ' km</p><p>Travel Time: ' + Math.round(totalTime / 60).toString() + ' mins</p>Trash Collected: ' + rtes_trash[index].toString() + ' kg</p>' +
+                '</div>' +
+                '</div>';
+
+                customPolyline.infoWindow = new google.maps.InfoWindow({
+                    content: contentString
+                });
+
+                google.maps.event.addListener(customPolyline, 'click', function(event) {
+
+                    if (selectedRoute && selectedRoute !== customPolyline) {
+                        selectedRoute.setOptions({ strokeWeight: 2 });
+                        selectedRoute.infoWindow.close();
+                    }
+
+                    if (selectedRoute == customPolyline) {
+                        customPolyline.setOptions({ strokeWeight: 2 });
+                        customPolyline.infoWindow.close();
+                        selectedRoute = null;
+                    } 
+                    else {
+                        customPolyline.setOptions({ strokeWeight: 5 });
+                        customPolyline.infoWindow.setPosition(event.latLng);
+                        customPolyline.infoWindow.open(map);
+                        
+                        selectedRoute = customPolyline;
+                    }
+                });
+
+            } else {
+                window.alert('Directions request failed due to ' + status);
+            }
+        });
+    });
+
+    function getLatLng(gps_location) {
+        var coords = gps_location.split(","); 
+        return {lat: parseFloat(coords[0]), lng: parseFloat(coords[1])};
+    }
+
+    var marker = new google.maps.Marker({
+        position: {
+            lat: parseFloat(depotData.gps_location.split(",")[0]),
+            lng: parseFloat(depotData.gps_location.split(",")[1])
+        },
+        title: "Depot",
+        map: map,
+        icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            scale: 6,
+            fillColor: "black",
+            fillOpacity: 0.9,
+            strokeColor: "black",
+            strokeWeight: 1
+        }
+    });
+
+</script>
+
+
+<style>
+    html, body, #map {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+</style>
+
+</body>
+</html>
