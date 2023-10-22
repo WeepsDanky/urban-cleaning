@@ -1,6 +1,5 @@
 # Urban Cleaning (IM45)
-Demo Link: https://weepsdanky.github.io/urban-cleaning, 
-Or http://148.100.112.22/map/. 
+Visit the live demo: https://weepsdanky.github.io/urban-cleaning or http://148.100.112.22/map/. 
 ## Inspiration:
 
 In cities like London. There is a prevalent presence of street garbage due to the inefficiency of current waste cleaning systems. We harness the power of data science and technology for the good of these cities, aiming to massively optmize street cleaning operations worldwide.
