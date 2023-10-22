@@ -1,6 +1,6 @@
 import googlemaps
 
-gmaps = googlemaps.Client(key="AIzaSyCfITtYa7fMn5WJS__mpqWTu-5mNg4mt14")
+gmaps = googlemaps.Client(key="Your_GOOGLE_API_KEY")
 
 
 def get_driving_time(start_coords, end_coords):
