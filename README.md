@@ -1,38 +1,44 @@
-# Urban_Cleaning (IM45)
-
+# Urban Cleaning (IM45)
 ## Inspiration:
-The inspiration behind our project stems from the pressing issue of urban cleanliness, particularly evident in cities like London. The prevalent presence of garbage not only mars the cityscape but also signifies the inefficiency of current waste management systems. We were motivated to harness data science and technology for good, aiming to revolutionize street cleaning operations worldwide.
 
-## What it does: 
-Our solution employs advanced data science techniques to optimize urban cleaning. It integrates image segmentation, garbage identification, and path planning modules to efficiently tackle garbage piles. By utilizing existing surveillance cameras and crowd-sourced images, we identify and categorize garbage objects, allowing for streamlined collection routes and resource allocation. 
+In cities like London. There is a prevalent presence of street garbage due to the inefficiency of current waste cleaning systems. We harness the power of data science and technology for the good of these cities, aiming to massively optmize street cleaning operations worldwide.
+
+## What it does:
+
+Our solution employs effective data science techniques to optimize urban cleaning. It integrates semantic image segmentation, object classification, and path planning modules to efficiently track garbage piles. By utilizing existing security cameras and crowd-sourced images, we locate garbage piles, generating streamlined collection routes and resource allocation.
 
 ## How we built it:
-We leveraged the power of IBM Z Cloud infrastructure, combining models like SegFormer (https://huggingface.co/docs/transformers/model_doc/segformer) from Transformer and Convolutional Neural Networks (CNNs) for image analysis. Our platform integrates GPS data for precise localization, ensuring accurate garbage identification and collection. 
 
-## Challenges we ran into: 
+We leveraged the power of IBM Z infrastructure, combining models like SegFormer (https://huggingface.co/docs/transformers/model_doc/segformer) and our own Convolutional Neural Networks (CNNs) for image analysis. By integrates GPS locations of the footage, we ensures accurate garbage identification and then applies mapping with path finding.
 
-1. Limited GPU Availability: One of our primary challenges was the absence of GPU resources on IBM virtual machine, which necessitated innovative approaches for image processing.
-2. Data Integration: Collating and processing data from diverse sources posed a significant challenge, requiring meticulous data cleansing and synchronization efforts.
-3. Real-time Adaptability: Adapting the system to dynamic city events, rubbish removal companies and varying littering patterns proved to be a complex task, demanding robust algorithms and continuous refinement. 
+## Challenges we ran into:
 
-## Accomplishments that we're proud of: 
+1. Data Integration: Collecting and processing data from diverse sources posed a significant challenge, requiring meticulous data cleansing, augmentation and synchronization efforts.
+2. Real-time data accessibility: Adapting the system to access high quality real time data was challenging.
+3. Selecting Models: Finding the most efficient yet accurate pre-trained segmentation model.
 
-1. Overcoming GPU Limitations: Despite the absence of dedicated GPUs, we devised efficient strategies for image processing, showcasing our adaptability and resourcefulness.
-2. Seamless Integration: Successfully integrating existing surveillance systems into our solution demonstrated its practical feasibility and potential for widespread implementation.
-3. *Data Privacy*: Ensuring citizen privacy while utilizing street surveillance footage was a critical concern.
+## Accomplishments that we're proud of:
 
-## What we learned: 
+1. Reduction in Computing Power Requirement: Finding the optimal model that runs effortlessly on the IBM Z Community Notebook which has limited GPU support.
+2. Cohesive Modules: All three modules built by different members are able to work togather to pass artificial street footage data test.
+3. *Data Privacy*: Ensuring citizen privacy with IBM Z Encryption while utilizing street security footage.
+4. Building a live demo: https://weepsdanky.github.io/urban-cleaning redirected to the IMB Z server.
 
-1. Creative Problem-Solving: Addressing the GPU limitation led us to think outside the box, yielding innovative techniques for image processing. 
-2. Data Harmonization: Working with diverse data sources enhanced our skills in data cleansing and integration, essential for real-world applications. 
-3. Resourcefulness: Overcoming GPU limitations through innovative computational techniques.
-4. Privacy Considerations: Implementing stringent data protection measures in public surveillance applications.
-5. Adaptability: Designing a system capable of real-time adjustments to changing urban scenarios.
+## What we learned:
 
-## What's next for Urban Cleaning: 
+1. Creative Problem-Solving: Addressing the GPU limitation pushed us to further our research and found compromise yet optimal pre-trained model.
+2. Data Harmonization: Working with diverse data sources enhanced our skills in data cleansing and integration, essential for real-world applications.
+3. Privacy Considerations: Understanding the ethical side of image processing.
+4. Adaptability: Adapting to scenarials to complete the demo in proper time using existing resources.
+5. Decision Making: Weighting time, difficulty and reward to make optimal decisions on our technical stack and actions.
 
-1. Scalability and Live Deployment: We aim to scale the solution for live deployment, utilizing IBM Cloud's extensive data handling capabilities. 
-2. Privacy and Security Enhancements: Further fortifying the platform's security features will ensure citizen privacy and data protection.
-3. Adaptive AI: Implementing machine learning algorithms to dynamically adjust to city events and evolving littering behaviors for sustained cleanliness.
+## What's next for Urban Cleaning:
 
-By leveraging technology for good, we believe Urban Cleaning can revolutionize urban sanitation, benefitting communities, taxpayers, tourists, environmentalists, and municipal governments worldwide
+1. Improve Accuracy: Further improve the accuracy to further utilize the Computing Resources on IBM Z system. 
+2. Scalability and Live Deployment: We aim to scale the solution for live deployment, utilizing IBM Cloud's extensive data handling capabilities.
+3. Privacy and Security Enhancements: Further fortifying the platform's security features will ensure citizen privacy and data protection.
+4. Autonomous Robots + Data: Utilizing Autonomous Vehicles and robot arms to perform low cost high efficiency city cleaning systems upon IBM Z where our tech stack stands.
+
+We vision our Urban Cleaning system running on IBM Z can massively improve urban sanitation, saving substantial public funds, benefitting communities, taxpayers, and municipal governments worldwide.
+
+Visit the live demo: https://weepsdanky.github.io/urban-cleaning
