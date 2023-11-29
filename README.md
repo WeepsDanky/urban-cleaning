@@ -1,6 +1,7 @@
 # Urban Cleaning (IM45) 
 
 Visit the live 💥**DEMO**💥: https://weepsdanky.github.io/urban-cleaning OR http://148.100.112.22/map/
+Our project page: https://devpost.com/software/urban-cleaning
 
 ## 💡️Inspiration:
 
